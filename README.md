@@ -1,2 +1,2 @@
-# To-do-list-using-SpringBoot
+# Tasks-list-using-SpringBoot
 To-do list using SpringBoot Framework.
