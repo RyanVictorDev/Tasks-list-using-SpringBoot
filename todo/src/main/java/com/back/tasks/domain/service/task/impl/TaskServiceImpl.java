@@ -9,11 +9,13 @@ import com.back.tasks.domain.io.enums.TaskStatus;
 import com.back.tasks.domain.repository.task.TaskRepository;
 import com.back.tasks.domain.repository.user.UserRepository;
 import com.back.tasks.domain.service.authentication.AuthenticationService;
-import com.back.tasks.domain.service.authentication.impl.AuthenticationServiceImpl;
 import com.back.tasks.domain.service.task.TaskService;
-import com.back.tasks.domain.service.user.UserService;
+import com.back.tasks.domain.service.task.impl.assembler.TaskAssembler;
+import com.back.tasks.domain.service.task.impl.specification.TaskJPASpecification;
 import com.back.tasks.domain.validation.task.TaskValidation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.scheduling.config.Task;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -41,6 +43,7 @@ public class TaskServiceImpl implements TaskService {
         taskEntity.setDescription(request.getDescription());
         taskEntity.setStatus(TaskStatus.WAITING);
         taskEntity.setResponsible(responsibleUser);
+        taskEntity.setDeleted(false);
 
         taskRepository.save(taskEntity);
 
@@ -49,6 +52,12 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     public List<TaskResponse> getTasks() {
-        return taskAssembler.taskEntityToResponse(taskRepository.findAll());
+        UserResponse loggedUser = authenticationService.getLoggedUser();
+        UserEntity responsibleUser = userRepository.findById(loggedUser.getId());
+
+        Specification<TaskEntity> specification = (TaskJPASpecification.withDeleted(false))
+                .and(TaskJPASpecification.withResponsibleUserId(responsibleUser.getId()));
+
+        return taskAssembler.taskEntityToResponse(taskRepository.findAll(specification));
     }
 }

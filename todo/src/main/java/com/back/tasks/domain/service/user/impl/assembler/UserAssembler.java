@@ -1,4 +1,4 @@
-package com.back.tasks.domain.service.user.impl;
+package com.back.tasks.domain.service.user.impl.assembler;
 
 import com.back.tasks.api.io.user.UserResponse;
 import com.back.tasks.domain.entity.user.UserEntity;

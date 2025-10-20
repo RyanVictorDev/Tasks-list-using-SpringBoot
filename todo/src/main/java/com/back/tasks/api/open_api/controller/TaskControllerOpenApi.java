@@ -13,6 +13,8 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.parsing.Problem;
 import org.springframework.http.ResponseEntity;
 
+import java.util.List;
+
 @Tag(name = "Tasks", description = "Operations related to task management")
 public interface TaskControllerOpenApi {
 
@@ -32,4 +34,19 @@ public interface TaskControllerOpenApi {
             TaskRequest task
     );
 
+    @Operation(
+            summary = "Get all tasks",
+            description = "Get all tasks in the system",
+            responses = {
+                    @ApiResponse(responseCode = "201", description = "Successfully"),
+                    @ApiResponse(responseCode = "400", description = "Invalid data",
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class))),
+                    @ApiResponse(responseCode = "500", description = "Internal error",
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class)))
+            }
+    )
+    ResponseEntity<List<TaskResponse>> getTasks(
+//            @Parameter(description = "Representation of a task", required = true)
+//            TaskRequest task
+    );
 }

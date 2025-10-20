@@ -10,6 +10,8 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 @RestController
 @RequiredArgsConstructor
 @RequestMapping(path = "/task", produces = MediaType.APPLICATION_JSON_VALUE)
@@ -23,5 +25,13 @@ public class TaskController implements TaskControllerOpenApi {
     public ResponseEntity<TaskResponse> createTask(@RequestBody TaskRequest taskRequest) {
         TaskResponse response = taskService.createTask(taskRequest);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
+    }
+
+    @ResponseStatus(HttpStatus.OK)
+    @GetMapping
+    @ResponseBody
+    public ResponseEntity<List<TaskResponse>> getTasks() {
+        List<TaskResponse> response = taskService.getTasks();
+        return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }

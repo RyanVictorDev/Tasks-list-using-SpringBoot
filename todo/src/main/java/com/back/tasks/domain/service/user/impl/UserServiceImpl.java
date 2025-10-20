@@ -5,6 +5,7 @@ import com.back.tasks.api.io.user.UserResponse;
 import com.back.tasks.domain.entity.user.UserEntity;
 import com.back.tasks.domain.repository.user.UserRepository;
 import com.back.tasks.domain.service.user.UserService;
+import com.back.tasks.domain.service.user.impl.assembler.UserAssembler;
 import com.back.tasks.domain.validation.user.impl.UserValidationImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -38,6 +39,7 @@ public class UserServiceImpl implements UserService {
         userRepository.save(userEntity);
 
         return UserResponse.builder()
+                                .id(userEntity.getId())
                                 .name(request.getName())
                                 .email(request.getEmail())
                             .build();

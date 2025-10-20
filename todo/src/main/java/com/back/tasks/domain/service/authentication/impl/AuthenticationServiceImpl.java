@@ -6,13 +6,11 @@ import com.back.tasks.domain.entity.user.UserEntity;
 import com.back.tasks.domain.exception.IllegalValueException;
 import com.back.tasks.domain.repository.user.UserRepository;
 import com.back.tasks.domain.service.authentication.AuthenticationService;
-import com.back.tasks.domain.service.user.impl.UserAssembler;
+import com.back.tasks.domain.service.user.impl.assembler.UserAssembler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.List;
 
 @Service
 @RequiredArgsConstructor

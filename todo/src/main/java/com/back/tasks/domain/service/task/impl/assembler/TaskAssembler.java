@@ -1,8 +1,8 @@
-package com.back.tasks.domain.service.task.impl;
+package com.back.tasks.domain.service.task.impl.assembler;
 
 import com.back.tasks.api.io.task.TaskResponse;
 import com.back.tasks.domain.entity.task.TaskEntity;
-import com.back.tasks.domain.service.user.impl.UserAssembler;
+import com.back.tasks.domain.service.user.impl.assembler.UserAssembler;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 

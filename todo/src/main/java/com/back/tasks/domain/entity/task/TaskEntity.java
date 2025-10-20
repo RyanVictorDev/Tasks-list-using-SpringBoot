@@ -30,4 +30,7 @@ public class TaskEntity extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "responsible_id")
     private UserEntity responsible;
+
+    @Column(nullable = false)
+    private Boolean deleted;
 }
