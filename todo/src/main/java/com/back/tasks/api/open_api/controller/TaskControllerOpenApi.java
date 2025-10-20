@@ -1,5 +1,6 @@
 package com.back.tasks.api.open_api.controller;
 
+import com.back.tasks.api.io.task.TaskFilterRequest;
 import com.back.tasks.api.io.task.TaskRequest;
 import com.back.tasks.api.io.task.TaskResponse;
 import com.back.tasks.api.io.user.UserCreateRequest;
@@ -10,6 +11,7 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.beans.factory.parsing.Problem;
 import org.springframework.http.ResponseEntity;
 
@@ -46,7 +48,7 @@ public interface TaskControllerOpenApi {
             }
     )
     ResponseEntity<List<TaskResponse>> getTasks(
-//            @Parameter(description = "Representation of a task", required = true)
-//            TaskRequest task
+            @Parameter(name = "body", description = "Task filter", required = false)
+            @ParameterObject TaskFilterRequest filterRequest
     );
 }

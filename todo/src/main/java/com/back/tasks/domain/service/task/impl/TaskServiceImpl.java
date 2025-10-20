@@ -1,5 +1,6 @@
 package com.back.tasks.domain.service.task.impl;
 
+import com.back.tasks.api.io.task.TaskFilterRequest;
 import com.back.tasks.api.io.task.TaskRequest;
 import com.back.tasks.api.io.task.TaskResponse;
 import com.back.tasks.api.io.user.UserResponse;
@@ -51,13 +52,22 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public List<TaskResponse> getTasks() {
+    public List<TaskResponse> getTasks(TaskFilterRequest filterRequest) {
         UserResponse loggedUser = authenticationService.getLoggedUser();
         UserEntity responsibleUser = userRepository.findById(loggedUser.getId());
 
         Specification<TaskEntity> specification = (TaskJPASpecification.withDeleted(false))
-                .and(TaskJPASpecification.withResponsibleUserId(responsibleUser.getId()));
+                .and(TaskJPASpecification.withResponsibleUserId(responsibleUser.getId()))
+                .and(
+                        (TaskJPASpecification.withTitleLike(filterRequest.getSearchText()))
+                                .or(TaskJPASpecification.withDescriptionLike(filterRequest.getSearchText()))
+                                .or(TaskJPASpecification.withResponsibleUserNameLike(filterRequest.getSearchText()))
+                                .or(TaskJPASpecification.withResponsibleUserEmailLike(filterRequest.getSearchText()))
+                )
+                .and(TaskJPASpecification.withStatus(filterRequest.getTaskStatus()))
+                .and(TaskJPASpecification.withDeleted(false));
 
         return taskAssembler.taskEntityToResponse(taskRepository.findAll(specification));
     }
+
 }

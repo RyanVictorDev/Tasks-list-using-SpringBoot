@@ -1,10 +1,12 @@
 package com.back.tasks.api.controller;
 
+import com.back.tasks.api.io.task.TaskFilterRequest;
 import com.back.tasks.api.io.task.TaskRequest;
 import com.back.tasks.api.io.task.TaskResponse;
 import com.back.tasks.api.open_api.controller.TaskControllerOpenApi;
 import com.back.tasks.domain.service.task.TaskService;
 import lombok.RequiredArgsConstructor;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -30,8 +32,8 @@ public class TaskController implements TaskControllerOpenApi {
     @ResponseStatus(HttpStatus.OK)
     @GetMapping
     @ResponseBody
-    public ResponseEntity<List<TaskResponse>> getTasks() {
-        List<TaskResponse> response = taskService.getTasks();
+    public ResponseEntity<List<TaskResponse>> getTasks(@ParameterObject TaskFilterRequest filterRequest) {
+        List<TaskResponse> response = taskService.getTasks(filterRequest);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 }
