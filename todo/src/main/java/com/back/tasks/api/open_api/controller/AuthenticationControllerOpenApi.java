@@ -13,7 +13,7 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.beans.factory.parsing.Problem;
 import org.springframework.http.ResponseEntity;
 
-@Tag(name = "Auth", description = "Operations related to user management")
+@Tag(name = "Auth", description = "Operations related to authentication")
 public interface AuthenticationControllerOpenApi {
 
     @Operation(
@@ -28,7 +28,7 @@ public interface AuthenticationControllerOpenApi {
             }
     )
     ResponseEntity<AuthenticationResponse> login(
-            @Parameter(description = "Representation of a new user", required = true)
+            @Parameter(description = "Login", required = true)
             AuthenticationRequest request
     );
 
