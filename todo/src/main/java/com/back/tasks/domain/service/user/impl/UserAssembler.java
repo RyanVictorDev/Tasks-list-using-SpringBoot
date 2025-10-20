@@ -18,11 +18,20 @@ public class UserAssembler {
         for (UserEntity userEntity : userEntityList) {
             userResponseList.add(
                 UserResponse.builder()
+                        .id(userEntity.getId())
                         .name(userEntity.getName())
                         .email(userEntity.getEmail())
                         .build()
             );
         }
         return userResponseList;
+    }
+
+    public UserResponse parseUserEntityToResponse(UserEntity userEntityList) {
+        return UserResponse.builder()
+                .id(userEntityList.getId())
+                .name(userEntityList.getName())
+                .email(userEntityList.getEmail())
+                .build();
     }
 }

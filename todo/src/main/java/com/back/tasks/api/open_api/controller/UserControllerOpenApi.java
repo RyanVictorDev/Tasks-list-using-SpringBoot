@@ -43,5 +43,5 @@ public interface UserControllerOpenApi {
                             content = @Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class)))
             }
     )
-    ResponseEntity<List<UserResponse>> getAll();
+    List<UserResponse> getAll();
 }
