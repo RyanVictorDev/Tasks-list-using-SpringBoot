@@ -11,4 +11,5 @@ public interface TaskService {
     TaskResponse createTask(TaskRequest request);
     List<TaskResponse> getTasks(TaskFilterRequest filterRequest);
     TaskResponse updateTask(Long id, TaskUpdateRequest request);
+    String deleteTask(Long id);
 }

@@ -73,4 +73,20 @@ public interface TaskControllerOpenApi {
             TaskUpdateRequest request
     );
 
+    @Operation(
+            summary = "Delete task",
+            description = "Delete an existing task by ID",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Successfully updated"),
+                    @ApiResponse(responseCode = "400", description = "Invalid data",
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class))),
+                    @ApiResponse(responseCode = "500", description = "Internal error",
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class)))
+            }
+    )
+    ResponseEntity<String> deleteTask(
+            @Parameter(description = "Id of the task", required = true)
+            Long id
+    );
+
 }

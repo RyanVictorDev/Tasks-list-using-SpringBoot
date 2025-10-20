@@ -103,4 +103,19 @@ public class TaskServiceImpl implements TaskService {
         return taskAssembler.taskEntityToResponse(saved);
     }
 
+    @Override
+    public String deleteTask(Long id) {
+        TaskEntity task = taskRepository.findById(id)
+                .orElseThrow(() -> new IllegalValueException("Task not found"));
+
+        UserResponse loggedUser = authenticationService.getLoggedUser();
+        if (task.getResponsible().getId() != loggedUser.getId()) {
+            throw new IllegalValueException("You are not allowed to edit this task");
+        }
+
+        task.setDeleted(true);
+        taskRepository.save(task);
+
+        return "Task has been deleted";
+    }
 }

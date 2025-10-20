@@ -50,4 +50,12 @@ public class TaskController implements TaskControllerOpenApi {
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 
+    @ResponseStatus(HttpStatus.OK)
+    @DeleteMapping("/{id}")
+    @Override
+    public ResponseEntity<String> deleteTask(@PathVariable Long id) {
+        String response = taskService.deleteTask(id);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
 }
