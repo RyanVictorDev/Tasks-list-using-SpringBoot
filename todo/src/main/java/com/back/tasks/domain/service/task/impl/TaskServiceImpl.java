@@ -12,6 +12,7 @@ import com.back.tasks.domain.service.authentication.AuthenticationService;
 import com.back.tasks.domain.service.authentication.impl.AuthenticationServiceImpl;
 import com.back.tasks.domain.service.task.TaskService;
 import com.back.tasks.domain.service.user.UserService;
+import com.back.tasks.domain.validation.task.TaskValidation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -25,9 +26,13 @@ public class TaskServiceImpl implements TaskService {
     private final TaskAssembler taskAssembler;
     private final AuthenticationService authenticationService;
     private final UserRepository userRepository;
+    private final TaskValidation taskValidation;
 
     @Override
     public TaskResponse createTask(TaskRequest request) {
+
+        taskValidation.validateCreation(request);
+
         TaskEntity taskEntity = new TaskEntity();
         UserResponse loggedUser = authenticationService.getLoggedUser();
         UserEntity responsibleUser = userRepository.findById(loggedUser.getId());
