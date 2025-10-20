@@ -20,8 +20,6 @@ import java.util.List;
 public class UserController implements UserControllerOpenApi {
 
     private final UserService userService;
-    private final UserRepository userRepository;
-    private final UserAssembler userAssembler;
 
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
@@ -35,6 +33,6 @@ public class UserController implements UserControllerOpenApi {
     @GetMapping
     @Override
     public List<UserResponse> getAll() {
-        return userAssembler.parseUserEntityToResponse(userRepository.findAll());
+        return userService.getAll();
     }
 }
