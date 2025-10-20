@@ -5,6 +5,7 @@ import com.back.tasks.api.io.task.TaskUpdateRequest;
 import com.back.tasks.api.io.user.UserCreateRequest;
 import com.back.tasks.api.io.user.UserResponse;
 import com.back.tasks.domain.entity.task.TaskEntity;
+import com.back.tasks.domain.entity.user.UserEntity;
 import com.back.tasks.domain.exception.IllegalValueException;
 import com.back.tasks.domain.repository.task.TaskRepository;
 import com.back.tasks.domain.repository.user.UserRepository;
@@ -32,6 +33,7 @@ public class TaskValidationImpl implements TaskValidation {
     public void validateForUpdate(TaskUpdateRequest request, Long id) {
         validateTaskExists(id);
         validateUserPermissionToEdit(id);
+        validateUserExists(request);
     }
 
     private void validateTitle(TaskRequest request) {
@@ -63,5 +65,11 @@ public class TaskValidationImpl implements TaskValidation {
         if (task.getResponsible().getId() != loggedUser.getId()) {
             throw new IllegalValueException("You are not allowed to edit this task");
         }
+    }
+
+    private void validateUserExists(TaskUpdateRequest request) {
+        UserEntity user = userRepository.findById(request.getResponsibleId());
+
+        if (user == null) throw new IllegalValueException("User not found");
     }
 }

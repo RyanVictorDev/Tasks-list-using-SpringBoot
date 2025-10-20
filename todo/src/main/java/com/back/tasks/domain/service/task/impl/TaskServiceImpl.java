@@ -93,6 +93,11 @@ public class TaskServiceImpl implements TaskService {
             task.setStatus(request.getStatus());
         }
 
+        if (request.getResponsibleId() != null && !request.getResponsibleId().toString().isEmpty()) {
+            UserEntity user = userRepository.findById(request.getResponsibleId());
+            task.setResponsible(user);
+        }
+
         task.setUpdatedAt(OffsetDateTime.now());
 
         TaskEntity saved = taskRepository.save(task);
