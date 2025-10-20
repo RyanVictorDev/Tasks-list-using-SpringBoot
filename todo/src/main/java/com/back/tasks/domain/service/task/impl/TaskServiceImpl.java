@@ -19,7 +19,6 @@ import com.back.tasks.domain.validation.task.TaskValidation;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.scheduling.config.Task;
 import org.springframework.stereotype.Service;
 
 import java.time.OffsetDateTime;
@@ -38,7 +37,7 @@ public class TaskServiceImpl implements TaskService {
     @Override
     public TaskResponse createTask(TaskRequest request) {
 
-        taskValidation.validateCreation(request);
+        taskValidation.validateForCreation(request);
 
         TaskEntity taskEntity = new TaskEntity();
         UserResponse loggedUser = authenticationService.getLoggedUser();
@@ -77,13 +76,10 @@ public class TaskServiceImpl implements TaskService {
     @Override
     @Transactional
     public TaskResponse updateTask(Long id, TaskUpdateRequest request) {
+        taskValidation.validateForUpdate(request, id);
+
         TaskEntity task = taskRepository.findById(id)
                 .orElseThrow(() -> new IllegalValueException("Task not found"));
-
-        UserResponse loggedUser = authenticationService.getLoggedUser();
-        if (task.getResponsible().getId() != loggedUser.getId()) {
-            throw new IllegalValueException("You are not allowed to edit this task");
-        }
 
         if (request.getTitle() != null && !request.getTitle().trim().isEmpty()) {
             task.setTitle(request.getTitle());
