@@ -7,6 +7,7 @@ import com.back.tasks.api.io.task.TaskUpdateRequest;
 import com.back.tasks.api.open_api.controller.TaskControllerOpenApi;
 import com.back.tasks.domain.io.enums.TaskStatus;
 import com.back.tasks.domain.service.task.TaskService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.HttpStatus;
@@ -51,10 +52,10 @@ public class TaskController implements TaskControllerOpenApi {
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @PutMapping("/{id}")
+    @PatchMapping("/{id}")
     @ResponseBody
     @Override
-    public ResponseEntity<TaskResponse> updateTask(@PathVariable Long id, @RequestBody TaskUpdateRequest request) {
+    public ResponseEntity<TaskResponse> updateTask(@PathVariable Long id, @RequestBody @Valid TaskUpdateRequest request) {
         TaskResponse response = taskService.updateTask(id, request);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }

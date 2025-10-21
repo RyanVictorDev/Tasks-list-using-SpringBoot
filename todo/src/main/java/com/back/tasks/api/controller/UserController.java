@@ -4,6 +4,7 @@ import com.back.tasks.api.io.user.UserCreateRequest;
 import com.back.tasks.api.io.user.UserResponse;
 import com.back.tasks.api.open_api.controller.UserControllerOpenApi;
 import com.back.tasks.domain.service.user.UserService;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -22,7 +23,7 @@ public class UserController implements UserControllerOpenApi {
     @ResponseStatus(HttpStatus.CREATED)
     @PostMapping
     @Override
-    public ResponseEntity<UserResponse> createUser(@RequestBody UserCreateRequest request) {
+    public ResponseEntity<UserResponse> createUser(@RequestBody @Valid UserCreateRequest request) {
         UserResponse response = userService.create(request);
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
