@@ -39,8 +39,8 @@ public interface TaskControllerOpenApi {
     );
 
     @Operation(
-            summary = "Get all tasks",
-            description = "Get all tasks in the system",
+            summary = "Get all tasks of logged user",
+            description = "Get you all tasks in the system",
             responses = {
                     @ApiResponse(responseCode = "200", description = "Successfully"),
                     @ApiResponse(responseCode = "400", description = "Invalid data",
@@ -89,4 +89,19 @@ public interface TaskControllerOpenApi {
             Long id
     );
 
+    @Operation(
+            summary = "Get all tasks",
+            description = "Get all tasks in the system",
+            responses = {
+                    @ApiResponse(responseCode = "200", description = "Successfully"),
+                    @ApiResponse(responseCode = "400", description = "Invalid data",
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class))),
+                    @ApiResponse(responseCode = "500", description = "Internal error",
+                            content = @Content(mediaType = "application/json", schema = @Schema(implementation = Problem.class)))
+            }
+    )
+    ResponseEntity<List<TaskResponse>> getAllTasks(
+            @Parameter(name = "body", description = "Task filter", required = false)
+            @ParameterObject TaskFilterRequest filterRequest
+    );
 }

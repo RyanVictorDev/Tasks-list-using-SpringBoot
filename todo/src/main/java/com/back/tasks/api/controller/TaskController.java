@@ -42,6 +42,15 @@ public class TaskController implements TaskControllerOpenApi {
     }
 
     @ResponseStatus(HttpStatus.OK)
+    @GetMapping("/all")
+    @ResponseBody
+    @Override
+    public ResponseEntity<List<TaskResponse>> getAllTasks(@ParameterObject TaskFilterRequest filterRequest) {
+        List<TaskResponse> response = taskService.getAllTasks(filterRequest);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
+    @ResponseStatus(HttpStatus.OK)
     @PutMapping("/{id}")
     @ResponseBody
     @Override

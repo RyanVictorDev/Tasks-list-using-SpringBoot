@@ -53,7 +53,7 @@ public class TaskValidationImpl implements TaskValidation {
     }
 
     private void validateTaskExists(Long id) {
-        TaskEntity task = taskRepository.findById(id)
+        TaskEntity task = taskRepository.findByIdAndDeletedFalse(id)
                 .orElseThrow(() -> new IllegalValueException("Task not found"));
     }
 
@@ -68,8 +68,10 @@ public class TaskValidationImpl implements TaskValidation {
     }
 
     private void validateUserExists(TaskUpdateRequest request) {
-        UserEntity user = userRepository.findById(request.getResponsibleId());
+        if (request.getResponsibleId() != null) {
+            UserEntity user = userRepository.findById(request.getResponsibleId());
 
-        if (user == null) throw new IllegalValueException("User not found");
+            if (user == null) throw new IllegalValueException("User not found");
+        }
     }
 }

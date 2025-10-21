@@ -74,6 +74,21 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
+    public List<TaskResponse> getAllTasks(TaskFilterRequest filterRequest) {
+        Specification<TaskEntity> specification = (TaskJPASpecification.withDeleted(false))
+                .and(
+                        (TaskJPASpecification.withTitleLike(filterRequest.getSearchText()))
+                                .or(TaskJPASpecification.withDescriptionLike(filterRequest.getSearchText()))
+                                .or(TaskJPASpecification.withResponsibleUserNameLike(filterRequest.getSearchText()))
+                                .or(TaskJPASpecification.withResponsibleUserEmailLike(filterRequest.getSearchText()))
+                )
+                .and(TaskJPASpecification.withStatus(filterRequest.getTaskStatus()))
+                .and(TaskJPASpecification.withDeleted(false));
+
+        return taskAssembler.taskEntityToResponse(taskRepository.findAll(specification));
+    }
+
+    @Override
     @Transactional
     public TaskResponse updateTask(Long id, TaskUpdateRequest request) {
         taskValidation.validateForUpdate(request, id);
