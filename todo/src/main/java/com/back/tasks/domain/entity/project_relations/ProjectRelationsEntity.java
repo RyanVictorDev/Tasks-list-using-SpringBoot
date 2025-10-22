@@ -1,9 +1,8 @@
-package com.back.tasks.domain.entity.task;
+package com.back.tasks.domain.entity.project_relations;
 
 import com.back.tasks.domain.entity.BaseEntity;
 import com.back.tasks.domain.entity.project.ProjectEntity;
 import com.back.tasks.domain.entity.user.UserEntity;
-import com.back.tasks.domain.io.enums.TaskStatus;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,28 +13,15 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "tasks")
+@Table(name = "project_relations")
 @Entity
-public class TaskEntity extends BaseEntity {
-
-    @Column(nullable = false)
-    private String title;
-
-    @Column(nullable = false)
-    private String description;
-
-    @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
-    private TaskStatus status;
+public class ProjectRelationsEntity extends BaseEntity {
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "responsible_id")
-    private UserEntity responsible;
+    @JoinColumn(name = "user_id")
+    private UserEntity user;
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "project_id")
     private ProjectEntity project;
-
-    @Column(nullable = false)
-    private Boolean deleted;
 }

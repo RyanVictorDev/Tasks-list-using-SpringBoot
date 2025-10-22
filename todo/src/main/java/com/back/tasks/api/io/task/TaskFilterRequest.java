@@ -7,6 +7,6 @@ import lombok.Setter;
 @Getter
 @Setter
 public class TaskFilterRequest {
-    String searchText;
-    TaskStatus taskStatus;
+    private String searchText;
+    private TaskStatus taskStatus;
 }

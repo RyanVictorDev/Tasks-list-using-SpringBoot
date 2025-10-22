@@ -1,6 +1,7 @@
 package com.back.tasks.domain.entity.user;
 
 import com.back.tasks.domain.entity.BaseEntity;
+import com.back.tasks.domain.io.enums.UserRole;
 import jakarta.persistence.*;
 import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
@@ -25,6 +26,9 @@ public class UserEntity extends BaseEntity implements UserDetails {
 
     @Column(nullable = false)
     private String password;
+
+    @Column(nullable = false)
+    private UserRole role;
 
     @Column(nullable = false)
     private Boolean deleted;

@@ -22,7 +22,7 @@ public class DataSeeder implements CommandLineRunner {
             UserEntity user = new UserEntity();
             user.setName("Ryan Victor");
             user.setEmail("vryan8294@gmail.com");
-            user.setPassword("123456");
+            user.setPassword("12345678");
             userRepository.save(user);
         }
 

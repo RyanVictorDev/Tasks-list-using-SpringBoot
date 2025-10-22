@@ -14,11 +14,11 @@ import java.time.OffsetDateTime;
 @AllArgsConstructor
 @Builder
 public class TaskResponse {
-    Long id;
-    String title;
-    String description;
-    TaskStatus status;
-    UserResponse responsible;
-    OffsetDateTime createdAt;
-    OffsetDateTime updatedAt;
+    private Long id;
+    private String title;
+    private String description;
+    private TaskStatus status;
+    private UserResponse responsible;
+    private OffsetDateTime createdAt;
+    private OffsetDateTime updatedAt;
 }

@@ -21,6 +21,7 @@ public class UserAssembler {
                         .id(userEntity.getId())
                         .name(userEntity.getName())
                         .email(userEntity.getEmail())
+                        .role(userEntity.getRole())
                         .build()
             );
         }
@@ -32,6 +33,7 @@ public class UserAssembler {
                 .id(userEntityList.getId())
                 .name(userEntityList.getName())
                 .email(userEntityList.getEmail())
+                .role(userEntityList.getRole())
                 .build();
     }
 }
