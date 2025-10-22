@@ -1,5 +1,6 @@
 package com.back.tasks.api.io.task;
 
+import com.back.tasks.api.io.project.ProjectResponse;
 import com.back.tasks.api.io.user.UserResponse;
 import com.back.tasks.domain.io.enums.TaskStatus;
 import lombok.AllArgsConstructor;
@@ -19,6 +20,7 @@ public class TaskResponse {
     private String description;
     private TaskStatus status;
     private UserResponse responsible;
+    private ProjectResponse project;
     private OffsetDateTime createdAt;
     private OffsetDateTime updatedAt;
 }

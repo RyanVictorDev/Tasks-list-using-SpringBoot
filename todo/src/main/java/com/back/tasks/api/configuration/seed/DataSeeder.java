@@ -3,6 +3,7 @@ package com.back.tasks.api.configuration.seed;
 import com.back.tasks.domain.entity.task.TaskEntity;
 import com.back.tasks.domain.entity.user.UserEntity;
 import com.back.tasks.domain.io.enums.TaskStatus;
+import com.back.tasks.domain.io.enums.UserRole;
 import com.back.tasks.domain.repository.task.TaskRepository;
 import com.back.tasks.domain.repository.user.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -20,9 +21,10 @@ public class DataSeeder implements CommandLineRunner {
     public void run(String... args) {
         if (userRepository.count() == 0) {
             UserEntity user = new UserEntity();
-            user.setName("Ryan Victor");
-            user.setEmail("vryan8294@gmail.com");
+            user.setName("Admin master");
+            user.setEmail("admin@admin.com");
             user.setPassword("12345678");
+            user.setRole(UserRole.ADMIN);
             userRepository.save(user);
         }
 

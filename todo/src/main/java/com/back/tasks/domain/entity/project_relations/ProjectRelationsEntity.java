@@ -24,4 +24,7 @@ public class ProjectRelationsEntity extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "project_id")
     private ProjectEntity project;
+
+    @Column(nullable = false)
+    private Boolean deleted;
 }

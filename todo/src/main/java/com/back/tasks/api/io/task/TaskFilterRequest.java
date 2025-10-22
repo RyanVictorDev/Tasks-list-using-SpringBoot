@@ -9,4 +9,5 @@ import lombok.Setter;
 public class TaskFilterRequest {
     private String searchText;
     private TaskStatus taskStatus;
+    private Long projectId;
 }

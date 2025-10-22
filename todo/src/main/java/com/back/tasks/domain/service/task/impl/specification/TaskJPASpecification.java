@@ -46,6 +46,19 @@ public class TaskJPASpecification {
         };
     }
 
+    public static Specification<TaskEntity> withProjectNameLike(final String name) {
+        return (root, query, cb) -> {
+            if (name == null || name.trim().isEmpty()) return null;
+            String pattern = "%" + name.toLowerCase() + "%";
+            return cb.like(cb.lower(root.get("project").get("name")), pattern);
+        };
+    }
+
+    public static Specification<TaskEntity> withProjectIdEquals(final Long id) {
+        return (root, query, cb) -> id == null ? null :
+                cb.equal(root.get("project").get("id"), id);
+    }
+
     public static Specification<TaskEntity> withResponsibleUserEmailLike(final String email) {
         return (root, query, cb) -> {
             if (email == null || email.trim().isEmpty()) return null;

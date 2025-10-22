@@ -66,8 +66,10 @@ public class TaskServiceImpl implements TaskService {
                                 .or(TaskJPASpecification.withDescriptionLike(filterRequest.getSearchText()))
                                 .or(TaskJPASpecification.withResponsibleUserNameLike(filterRequest.getSearchText()))
                                 .or(TaskJPASpecification.withResponsibleUserEmailLike(filterRequest.getSearchText()))
+                                .or(TaskJPASpecification.withProjectNameLike(filterRequest.getSearchText()))
                 )
                 .and(TaskJPASpecification.withStatus(filterRequest.getTaskStatus()))
+                .and(TaskJPASpecification.withProjectIdEquals(filterRequest.getProjectId()))
                 .and(TaskJPASpecification.withDeleted(false));
 
         return taskAssembler.taskEntityToResponse(taskRepository.findAll(specification));
@@ -81,8 +83,10 @@ public class TaskServiceImpl implements TaskService {
                                 .or(TaskJPASpecification.withDescriptionLike(filterRequest.getSearchText()))
                                 .or(TaskJPASpecification.withResponsibleUserNameLike(filterRequest.getSearchText()))
                                 .or(TaskJPASpecification.withResponsibleUserEmailLike(filterRequest.getSearchText()))
+                                .or(TaskJPASpecification.withProjectNameLike(filterRequest.getSearchText()))
                 )
                 .and(TaskJPASpecification.withStatus(filterRequest.getTaskStatus()))
+                .and(TaskJPASpecification.withProjectIdEquals(filterRequest.getProjectId()))
                 .and(TaskJPASpecification.withDeleted(false));
 
         return taskAssembler.taskEntityToResponse(taskRepository.findAll(specification));
