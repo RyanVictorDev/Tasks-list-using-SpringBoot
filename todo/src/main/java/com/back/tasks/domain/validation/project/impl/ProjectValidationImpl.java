@@ -142,7 +142,7 @@ public class ProjectValidationImpl implements ProjectValidation {
             }
 
             project.getUsers().forEach(user -> {
-                if (!uniqueIds.contains(user.getId())) throw new IllegalValueException("User with id " + user.getId() + " already in the project");
+                if (uniqueIds.contains(user.getId())) throw new IllegalValueException("User with id " + user.getId() + " already in the project");
             });
         }
     }
