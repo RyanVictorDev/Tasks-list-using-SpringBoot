@@ -43,6 +43,7 @@ public class UserServiceImpl implements UserService {
                                 .id(userEntity.getId())
                                 .name(request.getName())
                                 .email(request.getEmail())
+                                .role(request.getRole())
                             .build();
     }
 
