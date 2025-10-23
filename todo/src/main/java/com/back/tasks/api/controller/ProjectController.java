@@ -1,13 +1,12 @@
 package com.back.tasks.api.controller;
 
-import com.back.tasks.api.io.project.ProjectRequest;
-import com.back.tasks.api.io.project.ProjectResponse;
-import com.back.tasks.api.io.project.ProjectUpdateRequest;
-import com.back.tasks.api.io.project.UpdateProjectUsersRequest;
+import com.back.tasks.api.io.project.*;
+import com.back.tasks.api.io.task.TaskFilterRequest;
 import com.back.tasks.api.open_api.controller.ProjectControllerOpenApi;
 import com.back.tasks.api.open_api.controller.TaskControllerOpenApi;
 import com.back.tasks.domain.service.project.ProjectService;
 import lombok.RequiredArgsConstructor;
+import org.springdoc.core.annotations.ParameterObject;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -35,8 +34,8 @@ public class ProjectController implements ProjectControllerOpenApi {
     @GetMapping
     @ResponseBody
     @Override
-    public ResponseEntity<List<ProjectResponse>> getProjects() {
-        List<ProjectResponse> response = projectService.getProjects();
+    public ResponseEntity<List<ProjectResponse>> getProjects(@ParameterObject ProjectFilterRequest filterRequest) {
+        List<ProjectResponse> response = projectService.getProjects(filterRequest);
         return new ResponseEntity<>(response, HttpStatus.OK);
     }
 

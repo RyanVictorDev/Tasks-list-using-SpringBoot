@@ -1,9 +1,6 @@
 package com.back.tasks.domain.service.project.impl;
 
-import com.back.tasks.api.io.project.ProjectRequest;
-import com.back.tasks.api.io.project.ProjectResponse;
-import com.back.tasks.api.io.project.ProjectUpdateRequest;
-import com.back.tasks.api.io.project.UpdateProjectUsersRequest;
+import com.back.tasks.api.io.project.*;
 import com.back.tasks.api.io.user.UserResponse;
 import com.back.tasks.domain.entity.project.ProjectEntity;
 import com.back.tasks.domain.entity.project_relations.ProjectRelationsEntity;
@@ -74,20 +71,26 @@ public class ProjectServiceImpl implements ProjectService {
     }
 
     @Override
-    public List<ProjectResponse> getProjects() {
+    public List<ProjectResponse> getProjects(ProjectFilterRequest filterRequest) {
         UserResponse user = authenticationService.getLoggedUser();
 
-        List<ProjectEntity> projectEntities;
+        Long managerId = (user.getRole() == UserRole.ADMIN)
+                ? filterRequest.getManagerId()
+                : user.getId();
 
-        if (user.getRole() == UserRole.ADMIN) {
-            projectEntities = projectRepository.findAll();
-        } else {
-            Specification<ProjectEntity> specification = (ProjectJPASpecification.withManagerIdEquals(String.valueOf(user.getId())));
-            projectEntities = projectRepository.findAll(specification);
-        }
+        Specification<ProjectEntity> specification =
+                ProjectJPASpecification.withManagerIdEquals(managerId)
+                        .and(ProjectJPASpecification.withProjectIdEquals(filterRequest.getProjectId()))
+                        .and(
+                                ProjectJPASpecification.withProjectNameEquals(filterRequest.getSearchText())
+                                        .or(ProjectJPASpecification.withProjectDescriptionEquals(filterRequest.getSearchText()))
+                        );
+
+        List<ProjectEntity> projectEntities = projectRepository.findAll(specification);
 
         return projectAssembler.parseProjectEntityToResponse(projectEntities);
     }
+
 
     @Override
     @Transactional

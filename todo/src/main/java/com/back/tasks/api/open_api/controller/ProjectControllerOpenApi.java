@@ -1,9 +1,6 @@
 package com.back.tasks.api.open_api.controller;
 
-import com.back.tasks.api.io.project.ProjectRequest;
-import com.back.tasks.api.io.project.ProjectResponse;
-import com.back.tasks.api.io.project.ProjectUpdateRequest;
-import com.back.tasks.api.io.project.UpdateProjectUsersRequest;
+import com.back.tasks.api.io.project.*;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -45,8 +42,8 @@ public interface ProjectControllerOpenApi {
             }
     )
     ResponseEntity<List<ProjectResponse>> getProjects(
-//            @Parameter(description = "Representation of a project", required = true)
-//            ProjectRequest request
+            @Parameter(description = "Representation of a project", required = true)
+            ProjectFilterRequest filterRequest
     );
 
     @Operation(
