@@ -59,8 +59,10 @@ public class ProjectServiceImpl implements ProjectService {
 
                 ProjectRelationsEntity projectRelationsEntity = new ProjectRelationsEntity();
 
+                UserEntity userEntity = userRepository.findById(userId);
+
                 projectRelationsEntity.setProject(projectEntity);
-                projectRelationsEntity.setUser(user);
+                projectRelationsEntity.setUser(userEntity);
                 projectRelationsEntity.setDeleted(false);
 
                 projectRelationsRepository.save(projectRelationsEntity);
