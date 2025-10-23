@@ -1,4 +1,4 @@
-# 🧩 Gestão de Tasks
+# 🔩 Gestão de Tasks
 
 API para gerenciamento de tarefas (tasks) e projetos, com autenticação e controle de usuários.
 
@@ -6,34 +6,36 @@ API para gerenciamento de tarefas (tasks) e projetos, com autenticação e contr
 
 ## 🚀 Tecnologias Utilizadas
 
-- **Java 21**
-- **Spring Boot**
-- **PostgreSQL**
-- **Docker & Docker Compose**
+* **Java 21**
+* **Spring Boot**
+* **PostgreSQL**
+* **Docker & Docker Compose**
 
 ---
 
 ## ⚙️ Funcionalidades Principais
 
-- 🔐 Autenticação de usuários  
-- 👥 Cadastro e gerenciamento de usuários  
-- 📁 CRUD completo de projetos  
-- ✅ CRUD completo de tarefas (tasks)  
-- 🧾 Validações e tratamento de erros personalizados  
+* 🔐 Autenticação de usuários
+* 👥 Cadastro e gerenciamento de usuários
+* 📁 CRUD completo de projetos
+* ✅ CRUD completo de tarefas (tasks)
+* 🧾 Validações e tratamento de erros personalizados
 
 ---
 
-## 🛠️ Como Rodar o Projeto Localmente (com Docker)
+## 🛠️ Instruções de Instalação e Execução (com Docker)
 
-### 1️⃣ Clone o repositório
+### 1. Clone o repositório
+
 ```bash
 git clone https://github.com/seu-usuario/seu-repositorio.git
 cd seu-repositorio
 ```
 
-### 2️⃣ Crie o arquivo `.env` na raiz do projeto
+### 2. Crie o arquivo `.env` na raiz do projeto
 
 Exemplo de conteúdo:
+
 ```bash
 POSTGRES_DB=task_db
 POSTGRES_USER=postgres
@@ -49,51 +51,53 @@ KEY=MinhaChaveSuperSecreta1234567890
 EXPIRATION_LOGIN=3600000
 ```
 
-### 3️⃣ Suba os containers
+### 3. Suba os containers
+
 ```bash
 docker compose up -d --build
 ```
 
-### 4️⃣ Acesse a aplicação
-- A API estará disponível em:  
-  👉 [http://localhost:2030](http://localhost:2030)
+### 4. Acesse a aplicação
+
+* A API estará disponível em:
+  🔗 [http://localhost:2030](http://localhost:2030)
 
 ---
 
-## 🧠 Estrutura do Projeto
+## 💡 Escolhas Técnicas
+
+* **Spring Boot**: escolhido pela sua produtividade, injeção de dependências e estrutura organizada para APIs RESTful.
+* **PostgreSQL**: banco de dados relacional robusto e com excelente suporte a tipos complexos.
+* **Docker**: simplifica a execução do ambiente, eliminando problemas de configuração local.
+* **JWT (JSON Web Token)**: utilizado para autenticação segura e controle de sessões.
+
+Essas tecnologias foram escolhidas por garantirem **escalabilidade, segurança e manutenção simplificada**.
+
+---
+
+## 🧠 Uso de Inteligência Artificial
+
+Durante o desenvolvimento deste projeto, **foi utilizada IA (ChatGPT)** como assistente de apoio para:
+
+* Refinar a estrutura do código e boas práticas com Spring Boot;
+* Criar consultas otimizadas e especificações JPA dinâmicas;
+* Gerar esta documentação (README) de forma mais profissional e padronizada.
+
+---
+
+## 📢 Estrutura do Projeto
 
 ```
 .
 ├── src/
 │   ├── main/
 │   │   ├── java/com/back/tasks/...     # Código fonte principal
-│   │   └── resources/                  # Configurações e application.properties
-│   └── test/                           # Testes unitários e de integração
+│   │   └── resources/              # Configurações e application.properties
+│   └── test/                       # Testes unitários e de integração
 ├── Dockerfile
 ├── docker-compose.yml
 ├── .env.example
 └── README.md
-```
-
----
-
-## 🧰 Principais Dependências
-
-- **Spring Boot Starter Web**
-- **Spring Boot Starter Security**
-- **Spring Boot Starter Data JPA**
-- **PostgreSQL Driver**
-- **Lombok**
-- **JWT** (autenticação)
-- **Docker Compose**
-
----
-
-## 🧪 Testes
-
-Para rodar os testes automatizados:
-```bash
-./mvnw test
 ```
 
 ---
