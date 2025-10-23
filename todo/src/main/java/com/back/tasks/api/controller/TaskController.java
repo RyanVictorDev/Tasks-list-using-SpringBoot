@@ -5,7 +5,6 @@ import com.back.tasks.api.io.task.TaskRequest;
 import com.back.tasks.api.io.task.TaskResponse;
 import com.back.tasks.api.io.task.TaskUpdateRequest;
 import com.back.tasks.api.open_api.controller.TaskControllerOpenApi;
-import com.back.tasks.domain.io.enums.TaskStatus;
 import com.back.tasks.domain.service.task.TaskService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
