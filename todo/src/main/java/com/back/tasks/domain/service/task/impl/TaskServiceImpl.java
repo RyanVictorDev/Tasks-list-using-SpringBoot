@@ -5,10 +5,12 @@ import com.back.tasks.api.io.task.TaskRequest;
 import com.back.tasks.api.io.task.TaskResponse;
 import com.back.tasks.api.io.task.TaskUpdateRequest;
 import com.back.tasks.api.io.user.UserResponse;
+import com.back.tasks.domain.entity.project.ProjectEntity;
 import com.back.tasks.domain.entity.task.TaskEntity;
 import com.back.tasks.domain.entity.user.UserEntity;
 import com.back.tasks.domain.exception.IllegalValueException;
 import com.back.tasks.domain.io.enums.TaskStatus;
+import com.back.tasks.domain.repository.project.ProjectRepository;
 import com.back.tasks.domain.repository.task.TaskRepository;
 import com.back.tasks.domain.repository.user.UserRepository;
 import com.back.tasks.domain.service.authentication.AuthenticationService;
@@ -33,6 +35,7 @@ public class TaskServiceImpl implements TaskService {
     private final AuthenticationService authenticationService;
     private final UserRepository userRepository;
     private final TaskValidation taskValidation;
+    private final ProjectRepository projectRepository;
 
     @Override
     public TaskResponse createTask(TaskRequest request) {
@@ -43,10 +46,13 @@ public class TaskServiceImpl implements TaskService {
         UserResponse loggedUser = authenticationService.getLoggedUser();
         UserEntity responsibleUser = userRepository.findById(loggedUser.getId());
 
+        ProjectEntity project = projectRepository.findById(request.getProjectId()).orElseThrow(() -> new IllegalValueException("Project not found"));
+
         taskEntity.setTitle(request.getTitle());
         taskEntity.setDescription(request.getDescription());
         taskEntity.setStatus(TaskStatus.WAITING);
         taskEntity.setResponsible(responsibleUser);
+        taskEntity.setProject(project);
         taskEntity.setDeleted(false);
 
         taskRepository.save(taskEntity);
