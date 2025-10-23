@@ -7,17 +7,20 @@ import com.back.tasks.api.io.project.UpdateProjectUsersRequest;
 import com.back.tasks.api.io.user.UserResponse;
 import com.back.tasks.domain.entity.project.ProjectEntity;
 import com.back.tasks.domain.entity.project_relations.ProjectRelationsEntity;
+import com.back.tasks.domain.entity.task.TaskEntity;
 import com.back.tasks.domain.entity.user.UserEntity;
 import com.back.tasks.domain.exception.IllegalValueException;
 import com.back.tasks.domain.io.enums.UserRole;
 import com.back.tasks.domain.repository.project.ProjectRepository;
 import com.back.tasks.domain.repository.project_relations.ProjectRelationsRepository;
+import com.back.tasks.domain.repository.task.TaskRepository;
 import com.back.tasks.domain.repository.user.UserRepository;
 import com.back.tasks.domain.service.authentication.AuthenticationService;
 import com.back.tasks.domain.service.project.ProjectService;
 import com.back.tasks.domain.service.project.impl.assembler.ProjectAssembler;
 import com.back.tasks.domain.service.project.impl.specification.ProjectJPASpecification;
 import com.back.tasks.domain.service.project_relations.impl.specification.ProjectRelationsJPASpecification;
+import com.back.tasks.domain.service.task.impl.specification.TaskJPASpecification;
 import com.back.tasks.domain.validation.project.ProjectValidation;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
@@ -36,6 +39,7 @@ public class ProjectServiceImpl implements ProjectService {
     private final ProjectAssembler projectAssembler;
     private final ProjectRelationsRepository projectRelationsRepository;
     private final ProjectValidation projectValidation;
+    private final TaskRepository taskRepository;
 
     @Override
     @Transactional
@@ -110,6 +114,32 @@ public class ProjectServiceImpl implements ProjectService {
     public ProjectResponse deleteUsers(UpdateProjectUsersRequest updateProjectUsersRequest, Long projectId) {
         deleteProjectRelations(updateProjectUsersRequest, projectId);
         return projectAssembler.parseProjectEntityToResponse(projectRepository.findById(projectId).get());
+    }
+
+    @Override
+    @Transactional
+    public String deleteProject(Long projectId) {
+        projectValidation.validateForDeleteProject(projectId);
+
+        ProjectEntity project = projectRepository.findById(projectId).orElseThrow(() -> new IllegalValueException("Project with id " + projectId + " does not exist"));
+
+        Specification<ProjectRelationsEntity> specification = (ProjectRelationsJPASpecification.withProjectIdEquals(projectId));
+        List<ProjectRelationsEntity> projectRelations = projectRelationsRepository.findAll(specification);
+
+        projectRelations.forEach(projectRelation -> {
+            projectRelation.setDeleted(true);
+            projectRelationsRepository.save(projectRelation);
+        });
+
+        Specification<TaskEntity> specificationTask = (TaskJPASpecification.withProjectIdEquals(projectId));
+        List<TaskEntity> tasks = taskRepository.findAll(specificationTask);
+        tasks.forEach(task -> {
+            task.setDeleted(true);
+            taskRepository.save(task);
+        });
+
+        project.setDeleted(true);
+        return "Success when deleting project";
     }
 
     private void createProjectRelations(UpdateProjectUsersRequest userIds, Long projectId) {

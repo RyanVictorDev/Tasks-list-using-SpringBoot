@@ -63,6 +63,13 @@ public class ProjectValidationImpl implements ProjectValidation {
         validateRepeatedUser(request, projectId);
     }
 
+    @Override
+    public void validateForDeleteProject(Long projectId) {
+        validateProjectId(projectId);
+        validateProjectExists(projectId);
+        validateDeleteProjectPermission(projectId);
+    }
+
     private void validateProjectName(ProjectRequest request) {
         if (request.getProjectName() == null || request.getProjectName().isEmpty()) throw new IllegalValueException("Project name is required");
         if (request.getProjectName().length() < 3) throw new IllegalValueException("Project name must have at least 3 characters");
@@ -175,6 +182,17 @@ public class ProjectValidationImpl implements ProjectValidation {
 
         if (user.getRole() == UserRole.USER) {
             if (project.getManager().getId() !=  user.getId()) throw new IllegalValueException("You are not allowed to edit this project");
+        }
+    }
+
+    public void validateDeleteProjectPermission(Long projectId) {
+        UserResponse user = authenticationService.getLoggedUser();
+        ProjectEntity project = projectRepository.findById(projectId).orElseThrow(() -> new IllegalValueException("Project with id " + projectId + " does not exist"));
+
+        if (user.getRole() == UserRole.USER) {
+            if (!user.getId().equals(project.getManager().getId())) {
+                throw new IllegalValueException("You are not allowed to delete this project");
+            }
         }
     }
 }

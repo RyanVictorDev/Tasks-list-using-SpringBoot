@@ -13,4 +13,5 @@ public interface ProjectService {
     ProjectResponse update(ProjectUpdateRequest projectUpdateRequest, Long projectId);
     ProjectResponse addUsers(UpdateProjectUsersRequest updateProjectUsersRequest, Long projectId);
     ProjectResponse deleteUsers(UpdateProjectUsersRequest updateProjectUsersRequest, Long projectId);
+    String deleteProject(Long projectId);
 }

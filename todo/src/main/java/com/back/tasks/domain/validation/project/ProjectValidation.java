@@ -9,4 +9,5 @@ public interface ProjectValidation {
     void validateForUpdate(ProjectUpdateRequest request, Long projectId);
     void validateForCreateProjectRelations(UpdateProjectUsersRequest request, Long projectId);
     void validateForDeleteProjectRelations(UpdateProjectUsersRequest request, Long projectId);
+    void validateForDeleteProject(Long projectId);
 }
