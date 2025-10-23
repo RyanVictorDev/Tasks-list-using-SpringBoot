@@ -160,11 +160,17 @@ public class ProjectValidationImpl implements ProjectValidation {
                 throw new IllegalValueException("There can be no duplicate ids.");
             }
 
-            project.getUsers().forEach(user -> {
-                if (!uniqueIds.contains(user.getId())) throw new IllegalValueException("User with id " + user.getId() + " is not in the project");
-            });
+            for (Long userId : userIds) {
+                boolean exists = project.getUsers().stream()
+                        .anyMatch(u -> u.getId().equals(userId));
+
+                if (!exists) {
+                    throw new IllegalValueException("User with id " + userId + " is not in the project.");
+                }
+            }
         }
     }
+
 
     private void validateUserIdsHaveLoggedUser(ProjectRequest request) {
         UserResponse loggedUser = authenticationService.getLoggedUser();
