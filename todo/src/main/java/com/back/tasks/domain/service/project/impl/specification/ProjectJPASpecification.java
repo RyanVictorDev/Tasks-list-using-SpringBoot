@@ -28,4 +28,9 @@ public class ProjectJPASpecification {
         return (root, query, cb) -> projectDescription == null || projectDescription.isEmpty() ? null :
                 cb.equal(root.get("description"), projectDescription);
     }
+
+    public static Specification<ProjectEntity> withProjectDeletedEquals(Boolean deleted){
+        return (root, query, cb) -> deleted == null ? null :
+                cb.equal(root.get("deleted"), deleted);
+    }
 }

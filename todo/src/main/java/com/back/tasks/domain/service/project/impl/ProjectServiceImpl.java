@@ -82,6 +82,7 @@ public class ProjectServiceImpl implements ProjectService {
 
         Specification<ProjectEntity> specification =
                 ProjectJPASpecification.withManagerIdEquals(managerId)
+                        .and(ProjectJPASpecification.withProjectDeletedEquals(false))
                         .and(ProjectJPASpecification.withProjectIdEquals(filterRequest.getProjectId()))
                         .and(
                                 ProjectJPASpecification.withProjectNameEquals(filterRequest.getSearchText())
