@@ -57,6 +57,8 @@ public class TaskValidationImpl implements TaskValidation {
     }
 
     private void validateProjectId(TaskRequest request) {
+        projectRepository.findById(request.getProjectId()).orElseThrow(() -> new IllegalValueException("Project not found"));
+
         if (request.getProjectId() == null || request.getProjectId().toString().isEmpty()) throw new IllegalValueException("Project Id cannot be empty");
         projectRepository.findById(request.getProjectId()).orElseThrow(() -> new IllegalValueException("Project not found"));
     }
