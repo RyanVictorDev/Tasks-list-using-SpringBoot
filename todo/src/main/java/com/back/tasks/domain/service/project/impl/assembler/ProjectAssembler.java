@@ -22,7 +22,7 @@ public class ProjectAssembler {
     private final UserAssembler userAssembler;
 
     public ProjectResponse parseProjectEntityToResponse(ProjectEntity projectEntity) {
-        Specification<ProjectRelationsEntity> specification = (ProjectRelationsJPASpecification.withProjectIdEquals(projectEntity.getId()));
+        Specification<ProjectRelationsEntity> specification = (ProjectRelationsJPASpecification.withProjectIdEquals(projectEntity.getId())).and(ProjectRelationsJPASpecification.withDeletedEquals(false));
         List<ProjectRelationsEntity> projectRelationsEntities = projectRelationsRepository.findAll(specification);
 
         List<UserResponse> userResponses = new ArrayList<>();

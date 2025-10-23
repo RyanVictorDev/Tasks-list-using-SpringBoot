@@ -6,15 +6,19 @@ import com.back.tasks.api.io.project.ProjectUpdateRequest;
 import com.back.tasks.api.io.project.UpdateProjectUsersRequest;
 import com.back.tasks.api.io.user.UserResponse;
 import com.back.tasks.domain.entity.project.ProjectEntity;
+import com.back.tasks.domain.entity.project_relations.ProjectRelationsEntity;
 import com.back.tasks.domain.entity.user.UserEntity;
 import com.back.tasks.domain.exception.IllegalValueException;
 import com.back.tasks.domain.io.enums.UserRole;
 import com.back.tasks.domain.repository.project.ProjectRepository;
+import com.back.tasks.domain.repository.project_relations.ProjectRelationsRepository;
 import com.back.tasks.domain.repository.user.UserRepository;
 import com.back.tasks.domain.service.authentication.AuthenticationService;
 import com.back.tasks.domain.service.project.impl.assembler.ProjectAssembler;
+import com.back.tasks.domain.service.project_relations.impl.specification.ProjectRelationsJPASpecification;
 import com.back.tasks.domain.validation.project.ProjectValidation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Component;
 
 import java.util.HashSet;
@@ -29,6 +33,7 @@ public class ProjectValidationImpl implements ProjectValidation {
     private final ProjectRepository projectRepository;
     private final AuthenticationService authenticationService;
     private final ProjectAssembler projectAssembler;
+    private final ProjectRelationsRepository projectRelationsRepository;
 
     @Override
     public void validateForCreation(ProjectRequest request) {
