@@ -67,7 +67,7 @@ public class UserValidationImpl implements UserValidation {
                 user = userAssembler.parseUserEntityToResponse(loggedUser);;
             }
 
-            if (user != null && user.getRole() == UserRole.USER) {
+            if (user == null || (user != null && user.getRole() == UserRole.USER)) {
                 throw new IllegalValueException("Only an admin can create an admin user");
             }
         }
