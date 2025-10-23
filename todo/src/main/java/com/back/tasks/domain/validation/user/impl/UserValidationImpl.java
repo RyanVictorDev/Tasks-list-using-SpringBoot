@@ -54,8 +54,9 @@ public class UserValidationImpl implements UserValidation {
 
     private void validateRole(UserCreateRequest request) {
         UserResponse user = authenticationService.getLoggedUser();
-        if (user.getRole() != UserRole.ADMIN) {
-            if (request.getRole() == UserRole.ADMIN) {
+
+        if (request.getRole() == UserRole.ADMIN) {
+            if (user != null && user.getRole() == UserRole.USER) {
                 throw new IllegalValueException("Only an admin can create an admin user");
             }
         }
