@@ -60,7 +60,7 @@ public class ProjectValidationImpl implements ProjectValidation {
         validateUserExists(request);
         validateProjectId(projectId);
         validateDeleteUserIdsHaveManagerId(request, projectId);
-        validateRepeatedUser(request, projectId);
+        validateRepeatedUserForDelete(request, projectId);
     }
 
     @Override
@@ -143,6 +143,25 @@ public class ProjectValidationImpl implements ProjectValidation {
 
             project.getUsers().forEach(user -> {
                 if (uniqueIds.contains(user.getId())) throw new IllegalValueException("User with id " + user.getId() + " already in the project");
+            });
+        }
+    }
+
+    private void validateRepeatedUserForDelete(UpdateProjectUsersRequest request, Long projectId) {
+        if (request.getUserIds() != null && !request.getUserIds().isEmpty()) {
+            ProjectResponse project = projectAssembler.parseProjectEntityToResponse(
+                    projectRepository.findById(projectId).orElseThrow(() ->
+                            new IllegalValueException("Project with id " + projectId + " does not exist")));
+
+            List<Long> userIds = request.getUserIds();
+
+            Set<Long> uniqueIds = new HashSet<>(userIds);
+            if (uniqueIds.size() != userIds.size()) {
+                throw new IllegalValueException("There can be no duplicate ids.");
+            }
+
+            project.getUsers().forEach(user -> {
+                if (!uniqueIds.contains(user.getId())) throw new IllegalValueException("User with id " + user.getId() + " is not in the project");
             });
         }
     }
