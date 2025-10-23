@@ -8,6 +8,7 @@ import com.back.tasks.domain.entity.project.ProjectEntity;
 import com.back.tasks.domain.entity.task.TaskEntity;
 import com.back.tasks.domain.entity.user.UserEntity;
 import com.back.tasks.domain.exception.IllegalValueException;
+import com.back.tasks.domain.io.enums.UserRole;
 import com.back.tasks.domain.repository.project.ProjectRepository;
 import com.back.tasks.domain.repository.task.TaskRepository;
 import com.back.tasks.domain.repository.user.UserRepository;
@@ -73,8 +74,10 @@ public class TaskValidationImpl implements TaskValidation {
                 .orElseThrow(() -> new IllegalValueException("Task not found"));
 
         UserResponse loggedUser = authenticationService.getLoggedUser();
-        if (task.getResponsible().getId() != loggedUser.getId()) {
-            throw new IllegalValueException("You are not allowed to edit this task");
+        if (loggedUser.getRole() != UserRole.ADMIN || loggedUser.getId() != task.getProject().getManager().getId()) {
+            if (task.getResponsible().getId() != loggedUser.getId()) {
+                throw new IllegalValueException("You are not allowed to edit this task");
+            }
         }
     }
 
