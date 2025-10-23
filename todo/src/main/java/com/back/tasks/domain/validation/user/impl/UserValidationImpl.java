@@ -2,12 +2,15 @@ package com.back.tasks.domain.validation.user.impl;
 
 import com.back.tasks.api.io.user.UserCreateRequest;
 import com.back.tasks.api.io.user.UserResponse;
+import com.back.tasks.domain.entity.user.UserEntity;
 import com.back.tasks.domain.exception.IllegalValueException;
 import com.back.tasks.domain.io.enums.UserRole;
 import com.back.tasks.domain.repository.user.UserRepository;
 import com.back.tasks.domain.service.authentication.AuthenticationService;
+import com.back.tasks.domain.service.user.impl.assembler.UserAssembler;
 import com.back.tasks.domain.validation.user.UserValidation;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 import java.util.regex.Pattern;
@@ -17,6 +20,7 @@ import java.util.regex.Pattern;
 public class UserValidationImpl implements UserValidation {
     private final UserRepository userRepository;
     private final AuthenticationService authenticationService;
+    private final UserAssembler userAssembler;
 
     @Override
     public void validateCreation(UserCreateRequest request) {
@@ -53,9 +57,16 @@ public class UserValidationImpl implements UserValidation {
     }
 
     private void validateRole(UserCreateRequest request) {
-        UserResponse user = authenticationService.getLoggedUser();
-
         if (request.getRole() == UserRole.ADMIN) {
+            Object principal = SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+            UserResponse user = null;
+            UserEntity loggedUser;
+
+            if (principal instanceof UserEntity) {
+                loggedUser = (UserEntity) principal;
+                user = userAssembler.parseUserEntityToResponse(loggedUser);;
+            }
+
             if (user != null && user.getRole() == UserRole.USER) {
                 throw new IllegalValueException("Only an admin can create an admin user");
             }
