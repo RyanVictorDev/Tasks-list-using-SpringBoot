@@ -56,7 +56,7 @@ SPRING_DATASOURCE_USERNAME=postgres
 SPRING_DATASOURCE_PASSWORD=admin
 SPRING_JPA_PROPERTIES_HIBERNATE_DIALECT=org.hibernate.dialect.PostgreSQLDialect
 
-KEY=MySuperSecretKey1234567890
+KEY=MinhaChaveSuperSecreta1234567890
 EXPIRATION_LOGIN=3600000
 ```
 
@@ -69,7 +69,7 @@ docker compose up -d --build
 ### 4. Access the application
 
 * API will be available at:
-  🔗 [http://localhost:2030](http://localhost:2030)
+  🔗 [http://localhost:2030/swagger-ui/index.html#/](http://localhost:2030/swagger-ui/index.html#/)
 
 ---
 
@@ -179,7 +179,7 @@ docker compose up -d --build
 ### 4. Acesse a aplicação
 
 * A API estará disponível em:
-  🔗 [http://localhost:2030](http://localhost:2030)
+  🔗 [http://localhost:2030/swagger-ui/index.html#/](http://localhost:2030/swagger-ui/index.html#/)
 
 ---
 

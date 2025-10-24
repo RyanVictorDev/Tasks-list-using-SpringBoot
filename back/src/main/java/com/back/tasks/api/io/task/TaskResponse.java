@@ -3,16 +3,14 @@ package com.back.tasks.api.io.task;
 import com.back.tasks.api.io.project.ProjectResponse;
 import com.back.tasks.api.io.user.UserResponse;
 import com.back.tasks.domain.io.enums.TaskStatus;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 import java.time.OffsetDateTime;
 
 @Getter
 @Setter
 @AllArgsConstructor
+@NoArgsConstructor
 @Builder
 public class TaskResponse {
     private Long id;

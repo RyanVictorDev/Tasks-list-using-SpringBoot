@@ -146,13 +146,6 @@ public class ProjectServiceImpl implements ProjectService {
             projectRelationsRepository.save(projectRelation);
         });
 
-        Specification<TaskEntity> specificationTask = (TaskJPASpecification.withProjectIdEquals(projectId));
-        List<TaskEntity> tasks = taskRepository.findAll(specificationTask);
-        tasks.forEach(task -> {
-            task.setDeleted(true);
-            taskRepository.save(task);
-        });
-
         project.setDeleted(true);
         return "Success when deleting project";
     }

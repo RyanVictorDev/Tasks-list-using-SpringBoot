@@ -7,15 +7,18 @@ import com.back.tasks.api.io.project.UpdateProjectUsersRequest;
 import com.back.tasks.api.io.user.UserResponse;
 import com.back.tasks.domain.entity.project.ProjectEntity;
 import com.back.tasks.domain.entity.project_relations.ProjectRelationsEntity;
+import com.back.tasks.domain.entity.task.TaskEntity;
 import com.back.tasks.domain.entity.user.UserEntity;
 import com.back.tasks.domain.exception.IllegalValueException;
 import com.back.tasks.domain.io.enums.UserRole;
 import com.back.tasks.domain.repository.project.ProjectRepository;
 import com.back.tasks.domain.repository.project_relations.ProjectRelationsRepository;
+import com.back.tasks.domain.repository.task.TaskRepository;
 import com.back.tasks.domain.repository.user.UserRepository;
 import com.back.tasks.domain.service.authentication.AuthenticationService;
 import com.back.tasks.domain.service.project.impl.assembler.ProjectAssembler;
 import com.back.tasks.domain.service.project_relations.impl.specification.ProjectRelationsJPASpecification;
+import com.back.tasks.domain.service.task.impl.specification.TaskJPASpecification;
 import com.back.tasks.domain.validation.project.ProjectValidation;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.domain.Specification;
@@ -34,6 +37,7 @@ public class ProjectValidationImpl implements ProjectValidation {
     private final AuthenticationService authenticationService;
     private final ProjectAssembler projectAssembler;
     private final ProjectRelationsRepository projectRelationsRepository;
+    private final TaskRepository taskRepository;
 
     @Override
     public void validateForCreation(ProjectRequest request) {
@@ -73,6 +77,7 @@ public class ProjectValidationImpl implements ProjectValidation {
         validateProjectId(projectId);
         validateProjectExists(projectId);
         validateDeleteProjectPermission(projectId);
+        validateProjectHaveTasks(projectId);
     }
 
     private void validateProjectName(ProjectRequest request) {
@@ -221,8 +226,17 @@ public class ProjectValidationImpl implements ProjectValidation {
 
         if (user.getRole() == UserRole.USER) {
             if (!user.getId().equals(project.getManager().getId())) {
-                throw new IllegalValueException("You are not allowed to delete this project");
+                throw new IllegalValueException("Just admin or manager can delete this project");
             }
+        }
+    }
+
+    public void validateProjectHaveTasks(Long projectId) {
+        Specification<TaskEntity> specification = (TaskJPASpecification.withProjectIdEquals(projectId)).and(TaskJPASpecification.withDeleted(false));
+        List<TaskEntity> taskEntities = taskRepository.findAll(specification);
+
+        if (!taskEntities.isEmpty()) {
+            throw new IllegalValueException("You cannot delete this project as it has tasks associated with it.");
         }
     }
 }
