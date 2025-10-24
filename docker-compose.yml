@@ -16,7 +16,7 @@ services:
 
   tasks-back:
     build:
-      context: /todo
+      context: /back
       dockerfile: dockerfile.yml
     container_name: tasks_back
     depends_on:
