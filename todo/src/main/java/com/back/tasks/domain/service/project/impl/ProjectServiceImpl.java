@@ -76,7 +76,7 @@ public class ProjectServiceImpl implements ProjectService {
     public List<ProjectResponse> getProjects(ProjectFilterRequest filterRequest) {
         UserResponse user = authenticationService.getLoggedUser();
 
-        Specification<ProjectEntity> specification = Specification.where(
+        Specification<ProjectEntity> specification = (
                 ProjectJPASpecification.withProjectDeletedEquals(false)
         );
 
