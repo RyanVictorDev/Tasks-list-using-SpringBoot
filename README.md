@@ -73,6 +73,16 @@ docker compose up -d --build
 
 ---
 
+## 👤 Admin Master access
+```bash
+  {
+    "email": "admin@admin.com",
+    "password": "12345678"
+  }
+```
+
+---
+
 ## 💡 Technical Choices
 
 * **Spring Boot**: chosen for productivity, dependency injection, and structured RESTful API support.
@@ -180,6 +190,16 @@ docker compose up -d --build
 
 * A API estará disponível em:
   🔗 [http://localhost:2030/swagger-ui/index.html#/](http://localhost:2030/swagger-ui/index.html#/)
+
+---
+
+## 👤 Acesso Admin Master
+```bash
+  {
+    "email": "admin@admin.com",
+    "password": "12345678"
+  }
+```
 
 ---
 
