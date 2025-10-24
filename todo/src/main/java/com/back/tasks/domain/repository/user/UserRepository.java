@@ -10,4 +10,6 @@ public interface UserRepository extends JpaRepository<UserEntity,Integer>, JpaSp
     Optional<UserEntity> findByEmail(String email);
 
     UserEntity findById(Long id);
+
+    UserEntity findByIdAndDeletedFalse(long id);
 }

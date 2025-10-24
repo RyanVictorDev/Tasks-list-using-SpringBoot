@@ -1,5 +1,6 @@
 package com.back.tasks.api.io.user;
 
+import com.back.tasks.domain.io.enums.UserRole;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotEmpty;
@@ -20,4 +21,7 @@ public class UserCreateRequest {
 
     @NotBlank
     private String password;
+
+    @NotBlank
+    private UserRole role;
 }

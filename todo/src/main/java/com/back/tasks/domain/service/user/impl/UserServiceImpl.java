@@ -34,6 +34,7 @@ public class UserServiceImpl implements UserService {
         userEntity.setName(request.getName());
         userEntity.setEmail(request.getEmail());
         userEntity.setPassword(encodedPassword);
+        userEntity.setRole(request.getRole());
         userEntity.setDeleted(false);
 
         userRepository.save(userEntity);
@@ -42,6 +43,7 @@ public class UserServiceImpl implements UserService {
                                 .id(userEntity.getId())
                                 .name(request.getName())
                                 .email(request.getEmail())
+                                .role(request.getRole())
                             .build();
     }
 

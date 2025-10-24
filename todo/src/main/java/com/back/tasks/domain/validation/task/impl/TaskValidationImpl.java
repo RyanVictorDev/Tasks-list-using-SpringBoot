@@ -4,9 +4,12 @@ import com.back.tasks.api.io.task.TaskRequest;
 import com.back.tasks.api.io.task.TaskUpdateRequest;
 import com.back.tasks.api.io.user.UserCreateRequest;
 import com.back.tasks.api.io.user.UserResponse;
+import com.back.tasks.domain.entity.project.ProjectEntity;
 import com.back.tasks.domain.entity.task.TaskEntity;
 import com.back.tasks.domain.entity.user.UserEntity;
 import com.back.tasks.domain.exception.IllegalValueException;
+import com.back.tasks.domain.io.enums.UserRole;
+import com.back.tasks.domain.repository.project.ProjectRepository;
 import com.back.tasks.domain.repository.task.TaskRepository;
 import com.back.tasks.domain.repository.user.UserRepository;
 import com.back.tasks.domain.service.authentication.AuthenticationService;
@@ -22,11 +25,13 @@ public class TaskValidationImpl implements TaskValidation {
     private final TaskRepository taskRepository;
     private final UserRepository userRepository;
     private final AuthenticationService authenticationService;
+    private final ProjectRepository projectRepository;
 
     @Override
     public void validateForCreation(TaskRequest request) {
         validateTitle(request);
         validateDescription(request);
+        validateProjectId(request);
     }
 
     @Override
@@ -52,6 +57,13 @@ public class TaskValidationImpl implements TaskValidation {
         if (request.getDescription().length() > 255) throw new IllegalValueException("Description cannot be more than 255");
     }
 
+    private void validateProjectId(TaskRequest request) {
+        projectRepository.findById(request.getProjectId()).orElseThrow(() -> new IllegalValueException("Project not found"));
+
+        if (request.getProjectId() == null || request.getProjectId().toString().isEmpty()) throw new IllegalValueException("Project Id cannot be empty");
+        projectRepository.findById(request.getProjectId()).orElseThrow(() -> new IllegalValueException("Project not found"));
+    }
+
     private void validateTaskExists(Long id) {
         TaskEntity task = taskRepository.findByIdAndDeletedFalse(id)
                 .orElseThrow(() -> new IllegalValueException("Task not found"));
@@ -62,8 +74,10 @@ public class TaskValidationImpl implements TaskValidation {
                 .orElseThrow(() -> new IllegalValueException("Task not found"));
 
         UserResponse loggedUser = authenticationService.getLoggedUser();
-        if (task.getResponsible().getId() != loggedUser.getId()) {
-            throw new IllegalValueException("You are not allowed to edit this task");
+        if (loggedUser.getRole() != UserRole.ADMIN || loggedUser.getId() != task.getProject().getManager().getId()) {
+            if (task.getResponsible().getId() != loggedUser.getId()) {
+                throw new IllegalValueException("You are not allowed to edit this task");
+            }
         }
     }
 
