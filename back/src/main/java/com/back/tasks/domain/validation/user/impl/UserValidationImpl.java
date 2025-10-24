@@ -37,7 +37,7 @@ public class UserValidationImpl implements UserValidation {
 
     private void validateName(UserCreateRequest request) {
         if (request.getName() == null || request.getName().trim().isEmpty()) throw new IllegalValueException("Name is required");
-        if (request.getName().length() < 3) throw new IllegalValueException("Name is too short");
+        if (request.getName().length() < 3) throw new IllegalValueException("Name must be at least 3 characters");
         if (request.getName().length() > 255) throw new IllegalValueException("Name length exceeds 255");
     }
 

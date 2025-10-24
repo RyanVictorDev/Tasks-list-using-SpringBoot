@@ -1,12 +1,12 @@
 package com.back.tasks.api.io.user;
 
 import com.back.tasks.domain.io.enums.UserRole;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.*;
 
 @Getter
 @Setter
+@NoArgsConstructor
+@AllArgsConstructor
 @Builder
 public class UserResponse {
     private Long id;

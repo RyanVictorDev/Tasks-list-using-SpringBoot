@@ -49,7 +49,7 @@ public class ProjectController implements ProjectControllerOpenApi {
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @PutMapping("/addUsers/{id}")
+    @PostMapping("/addUsers/{id}")
     @Override
     public ResponseEntity<ProjectResponse> addUsers(@PathVariable Long id, @RequestBody UpdateProjectUsersRequest request) {
         ProjectResponse response = projectService.addUsers(request, id);
@@ -57,7 +57,7 @@ public class ProjectController implements ProjectControllerOpenApi {
     }
 
     @ResponseStatus(HttpStatus.OK)
-    @PutMapping("/removeUsers/{id}")
+    @PatchMapping("/removeUsers/{id}")
     @Override
     public ResponseEntity<ProjectResponse> removeUsers(@PathVariable Long id, @RequestBody UpdateProjectUsersRequest request) {
         ProjectResponse response = projectService.deleteUsers(request, id);
