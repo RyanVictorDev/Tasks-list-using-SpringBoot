@@ -1,12 +1,15 @@
 package com.back.tasks.domain.entity.project;
 
 import com.back.tasks.domain.entity.BaseEntity;
+import com.back.tasks.domain.entity.project_relations.ProjectRelationsEntity;
 import com.back.tasks.domain.entity.user.UserEntity;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+
+import java.util.List;
 
 @Getter
 @Setter
@@ -28,4 +31,8 @@ public class ProjectEntity extends BaseEntity {
 
     @Column(nullable = false)
     private Boolean deleted;
+
+    @OneToMany(mappedBy = "project", fetch = FetchType.LAZY)
+    private List<ProjectRelationsEntity> projectRelations;
+
 }

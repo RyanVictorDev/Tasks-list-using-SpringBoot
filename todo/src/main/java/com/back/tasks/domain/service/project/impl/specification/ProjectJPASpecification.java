@@ -33,4 +33,23 @@ public class ProjectJPASpecification {
         return (root, query, cb) -> deleted == null ? null :
                 cb.equal(root.get("deleted"), deleted);
     }
+
+    public static Specification<ProjectEntity> withUserRelation(Long userId, Long projectId) {
+        return (root, query, cb) -> {
+            if (userId == null && projectId == null) return null;
+
+            var join = root.join("projectRelations");
+
+            if (userId != null && projectId != null) {
+                return cb.and(
+                        cb.equal(join.get("user").get("id"), userId),
+                        cb.equal(join.get("project").get("id"), projectId)
+                );
+            } else if (userId != null) {
+                return cb.equal(join.get("user").get("id"), userId);
+            } else {
+                return cb.equal(join.get("project").get("id"), projectId);
+            }
+        };
+    }
 }

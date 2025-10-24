@@ -76,24 +76,33 @@ public class ProjectServiceImpl implements ProjectService {
     public List<ProjectResponse> getProjects(ProjectFilterRequest filterRequest) {
         UserResponse user = authenticationService.getLoggedUser();
 
-        Long managerId = (user.getRole() == UserRole.ADMIN)
-                ? filterRequest.getManagerId()
-                : user.getId();
+        if (user.getRole().equals(UserRole.ADMIN)) {
+            Specification<ProjectEntity> specification =
+                    ProjectJPASpecification.withManagerIdEquals(filterRequest.getManagerId())
+                            .and(ProjectJPASpecification.withProjectDeletedEquals(false))
+                            .and(ProjectJPASpecification.withProjectIdEquals(filterRequest.getProjectId()))
+                            .and(
+                                    ProjectJPASpecification.withProjectNameEquals(filterRequest.getSearchText())
+                                            .or(ProjectJPASpecification.withProjectDescriptionEquals(filterRequest.getSearchText()))
+                            );
+
+            return projectAssembler.parseProjectEntityToResponse(projectRepository.findAll(specification));
+        }
+
+        Long managerId = user.getId();
 
         Specification<ProjectEntity> specification =
                 ProjectJPASpecification.withManagerIdEquals(managerId)
                         .and(ProjectJPASpecification.withProjectDeletedEquals(false))
                         .and(ProjectJPASpecification.withProjectIdEquals(filterRequest.getProjectId()))
+                        .and(ProjectJPASpecification.withUserRelation(user.getId(), null))
                         .and(
                                 ProjectJPASpecification.withProjectNameEquals(filterRequest.getSearchText())
                                         .or(ProjectJPASpecification.withProjectDescriptionEquals(filterRequest.getSearchText()))
                         );
 
-        List<ProjectEntity> projectEntities = projectRepository.findAll(specification);
-
-        return projectAssembler.parseProjectEntityToResponse(projectEntities);
+        return projectAssembler.parseProjectEntityToResponse(projectRepository.findAll(specification));
     }
-
 
     @Override
     @Transactional
